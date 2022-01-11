@@ -7,6 +7,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.example.reversethenumber.databinding.ActivityMainBinding
 
 
@@ -25,13 +26,15 @@ class MainActivity : AppCompatActivity() {
         val numberEntered = stringEditNumber.toLongOrNull()
         if (numberEntered == null) {
             binding.reverseResult.text = ""
+            Toast.makeText(this,"Please enter numbers",Toast.LENGTH_LONG).show()
             return
+        }
+        if (stringEditNumber.matches("^[a-zA-Z]*$".toRegex())) {
+            showAlertFail()
         }
         if (!stringEditNumber.matches("^[a-zA-Z]*$".toRegex())) {
             val result = stringEditNumber.reversed()
             "Reversed number is $result".also { binding.reverseResult.text = it }
-        } else {
-            Toast.makeText(this,"Please enter only numbers",Toast.LENGTH_LONG).show()
         }
     }
     private fun handleKeyEvent(view: View, keyCode: Int): Boolean {
@@ -44,4 +47,20 @@ class MainActivity : AppCompatActivity() {
         }
         return false
     }
+    private fun showAlertFail() {
+        val alertFail = AlertDialog.Builder(this)
+        alertFail.setTitle("Invalid characters")
+        alertFail.setMessage("Please enter only numbers")
+        alertFail.setIcon(android.R.drawable.ic_dialog_alert)
+
+        alertFail.setPositiveButton("Try Again") { _, _ ->
+            Toast.makeText(this, "Reenter with only numbers", Toast.LENGTH_LONG).show()
+        }
+        alertFail.setNegativeButton("Exit") { _, _ ->
+            finish()
+        }
+        val myAlertFail: AlertDialog = alertFail.create()
+        myAlertFail.show()
+    }
+
 }
