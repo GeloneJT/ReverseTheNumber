@@ -23,12 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun reversedNumber() {
         val stringEditNumber = binding.enteredNumber.text.toString()
-        val numberEntered = stringEditNumber.toLongOrNull()
-        if (numberEntered == null) {
-            binding.reverseResult.text = ""
-            Toast.makeText(this,"Please enter numbers",Toast.LENGTH_LONG).show()
-            return
-        }
+
         if (stringEditNumber.matches("^[a-zA-Z]*$".toRegex())) {
             showAlertFail()
         }
@@ -50,14 +45,11 @@ class MainActivity : AppCompatActivity() {
     private fun showAlertFail() {
         val alertFail = AlertDialog.Builder(this)
         alertFail.setTitle("Invalid characters")
-        alertFail.setMessage("Please enter only numbers")
+        alertFail.setMessage("Cannot reverse an empty field")
         alertFail.setIcon(android.R.drawable.ic_dialog_alert)
 
         alertFail.setPositiveButton("Try Again") { _, _ ->
-            Toast.makeText(this, "Reenter with only numbers", Toast.LENGTH_LONG).show()
-        }
-        alertFail.setNegativeButton("Exit") { _, _ ->
-            finish()
+            Toast.makeText(this, "Reenter with numbers", Toast.LENGTH_LONG).show()
         }
         val myAlertFail: AlertDialog = alertFail.create()
         myAlertFail.show()
